@@ -15,8 +15,17 @@
    - Add explicit CAST() operations to ensure type consistency across UNION branches
    - Remember that what works in Snowflake may fail in BigQuery due to stricter type enforcement
 
-3. Best practices for cross-compatible SQL:
+3. UNION syntax differences:
+   - BigQuery requires explicitly specifying either UNION ALL or UNION DISTINCT
+   - Snowflake supports the unqualified UNION keyword (equivalent to UNION DISTINCT)
+   - When converting Snowflake to BigQuery:
+     * Replace bare UNION with UNION DISTINCT if duplicate removal is needed
+     * Use UNION ALL when you want to keep all rows (more efficient)
+   - This syntax difference is a common cause of errors when migrating queries
+
+4. Best practices for cross-compatible SQL:
    - Always use explicit type casting in UNION operations
    - Use CAST() functions to ensure matching types
    - When in doubt, convert temporal data to consistent formats
+   - Always use UNION ALL or UNION DISTINCT explicitly (never bare UNION)
    - Test queries on both platforms before declaring them cross-compatible
